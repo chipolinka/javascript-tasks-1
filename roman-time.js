@@ -1,57 +1,58 @@
 var hours = process.argv[2];
 var minutes = process.argv[3];
 
-function getGraphRoman(romanNum) {
-    var result = '';
+function printGraphRoman(romanNum) {
     var output = ['', '', '', ''];
-    for (var j = 0; j < romanNum.length; j++) {
-        if (romanNum[j] == 'I') {
-            for (var i = 0; i < output.length; i++) {
-                output[i] += '|| ';
+    if (romanNum) {
+        for (var k = 0; k < romanNum.length; k++) {
+            for (var j = 0; j < romanNum[k].length; j++) {
+                if (romanNum[k][j] == 'I') {
+                    for (var i = 0; i < output.length; i++) {
+                        output[i] += '|| ';
+                    }
+                }
+                else if (romanNum[k][j] == 'V') {
+                    output[0] += '\\\\      // ';
+                    output[1] += ' \\\\    //  ';
+                    output[2] += '  \\\\  //   ';
+                    output[3] += '    \\/     ';
+                }
+                else if (romanNum[k][j] == 'X') {
+                    output[0] += '\\\\  // ';
+                    output[1] += ' \\\\//  ';
+                    output[2] += ' //\\\\  ';
+                    output[3] += '//  \\\\ ';
+                }
+                else if (romanNum[k][j] == 'L') {
+                    for (var i = 0; i < output.length - 1; i++) {
+                        output[i] += '||     ';
+                    }
+                    output[output.length - 1] += '||____ ';
+                }
+                else if (romanNum[k][j] == '-') {
+                    output[0] += '    ';
+                    output[1] += '=== ';
+                    output[2] += '=== ';
+                    output[3] += '    ';
+                }
+            }
+            if (k == 0) {
+                    output[0] += '    ';
+                    output[1] += ' o  ';
+                    output[2] += ' o  ';
+                    output[3] += '    ';
             }
         }
-        else if (romanNum[j] == 'V') {
-            output[0] += '\\\\      // ';
-            output[1] += ' \\\\    //  ';
-            output[2] += '  \\\\  //   ';
-            output[3] += '    \\/     ';
-        }
-        else if (romanNum[j] == 'X') {
-            output[0] += '\\\\  // ';
-            output[1] += ' \\\\//  ';
-            output[2] += ' //\\\\  ';
-            output[3] += '//  \\\\ ';
-        }
-        else if (romanNum[j] == 'L') {
-            for (var i = 0; i < output.length - 1; i++) {
-                output[i] += '||     ';
-            }
-            output[output.length - 1] += '||____ ';
-        }
-        else if (romanNum[j] == ':') {
-            output[0] += '   ';
-            output[1] += 'o  ';
-            output[2] += 'o  ';
-            output[3] += '   ';
-        }
-        else if (romanNum[j] == '-') {
-            output[0] += '   ';
-            output[1] += '===';
-            output[2] += '===';
-            output[3] += '   ';
-        }
-        else {
-            output[0] += 'Время';
-            output[1] += 'указано';
-            output[2] += 'не';
-            output[3] += 'верно';
-            break;
-        }
+    }
+    else {
+        output[0] += 'Время';
+        output[1] += 'указано';
+        output[2] += 'не';
+        output[3] += 'верно';
     }
     for (var i = 0; i < output.length; i++) {
         console.log(output[i]);
     }
-    return result;
 }
 
 function getRoman(arabNum) {
@@ -80,16 +81,17 @@ function isCorrectMinutes(minutesInt) {
 }
 
 function getResult(hours, minutes) {
-    var result;
+    var result = [];
     var hoursInt = parseInt(hours);
     var minutesInt = parseInt(minutes);
     if (isCorrectHours(hoursInt) && isCorrectMinutes(minutesInt)) {
-        result = getRoman(hoursInt) + ':' + getRoman(minutesInt);
+        result[0] = getRoman(hoursInt);
+        result[1] = getRoman(minutesInt);
     }
     else {
-        result = 'Время указано неверно';
+        return null;
     }
     return result;
 }
 
-console.log(getGraphRoman(getResult(hours, minutes)));
+printGraphRoman(getResult(hours, minutes));
